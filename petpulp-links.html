@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PetPulp — Links</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #FFF8F0;
+      --card: #FFFFFF;
+      --accent1: #FF6B2B;
+      --accent2: #FFD166;
+      --accent3: #06D6A0;
+      --accent4: #118AB2;
+      --accent5: #EF476F;
+      --text: #1A1A2E;
+      --muted: #7A7A90;
+      --shadow: rgba(255,107,43,0.18);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 60px;
+      overflow-x: hidden;
+    }
+
+    /* Animated background blobs */
+    body::before, body::after {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::before {
+      width: 400px; height: 400px;
+      background: var(--accent1);
+      top: -100px; left: -100px;
+      animation: drift1 8s ease-in-out infinite alternate;
+    }
+    body::after {
+      width: 350px; height: 350px;
+      background: var(--accent2);
+      bottom: -80px; right: -80px;
+      animation: drift2 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift1 { to { transform: translate(60px, 80px); } }
+    @keyframes drift2 { to { transform: translate(-60px, -60px); } }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* Logo area */
+    .logo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.7) translateY(-20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .logo-circle {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: var(--accent1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 32px var(--shadow), 0 2px 8px rgba(0,0,0,0.08);
+      overflow: hidden;
+      border: 4px solid #fff;
+      position: relative;
+    }
+
+    .logo-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Fallback emoji logo if img fails */
+    .logo-fallback {
+      font-size: 52px;
+      line-height: 1;
+    }
+
+    .brand-name {
+      font-family: 'Baloo 2', cursive;
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .brand-name span {
+      color: var(--accent1);
+    }
+
+    .tagline {
+      font-size: 0.92rem;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-top: -4px;
+    }
+
+    /* Paw divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 4px 0 24px;
+      animation: fadeUp 0.5s 0.3s ease both;
+    }
+    .divider span { font-size: 1.2rem; }
+    .divider-line {
+      width: 60px; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent2));
+      border-radius: 2px;
+    }
+    .divider-line.right {
+      background: linear-gradient(90deg, var(--accent2), transparent);
+    }
+
+    /* Link buttons */
+    .links {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .link-btn {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 17px 22px;
+      border-radius: 20px;
+      text-decoration: none;
+      color: #fff;
+      font-family: 'Baloo 2', cursive;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.01em;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+      transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.18s ease;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      animation: slideUp 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    }
+
+    .link-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.12);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .link-btn:hover::after { opacity: 1; }
+    .link-btn:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.16);
+    }
+    .link-btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .link-btn:nth-child(1) { background: linear-gradient(135deg, #010101 0%, #2b2b2b 100%); animation-delay: 0.3s; }
+    .link-btn:nth-child(2) { background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%); animation-delay: 0.42s; }
+    .link-btn:nth-child(3) { background: linear-gradient(135deg, #C13584 0%, #E1306C 50%, #F56040 100%); animation-delay: 0.54s; }
+    .link-btn:nth-child(4) { background: linear-gradient(135deg, #1877F2 0%, #0a5fc4 100%); animation-delay: 0.66s; }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .link-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .link-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: white;
+    }
+
+    .link-label { flex: 1; }
+
+    .link-arrow {
+      opacity: 0.6;
+      font-size: 1.1rem;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .link-btn:hover .link-arrow {
+      opacity: 1;
+      transform: translateX(4px);
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      animation: fadeUp 0.5s 0.8s ease both;
+      opacity: 0;
+    }
+    .footer p {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .footer .paws {
+      font-size: 1.3rem;
+      letter-spacing: 4px;
+      margin-bottom: 4px;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="logo-wrap">
+      <div class="logo-circle">
+        <!-- Replace the src below with your actual logo image path/URL -->
+        <img src="your-logo-here.png" alt="PetPulp Logo"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <div class="logo-fallback" style="display:none;">🐾</div>
+      </div>
+      <div class="brand-name">Pet<span>Pulp</span></div>
+      <div class="tagline">Pets. Voice. Chaos. 🎬</div>
+    </div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span>🐾</span>
+      <span>🐾</span>
+      <span>🐾</span>
+      <div class="divider-line right"></div>
+    </div>
+
+    <div class="links">
+
+      <!-- TikTok -->
+      <a href="https://www.tiktok.com/@petpulp" target="_blank" class="link-btn">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
+          </svg>
+        </div>
+        <span class="link-label">TikTok</span>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <!-- YouTube -->
+      <a href="https://www.youtube.com/@PetPulp" target="_blank" class="link-btn">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M23.5 6.19a3.02 3.02 0 00-2.12-2.14C19.54 3.6 12 3.6 12 3.6s-7.54 0-9.38.49A3.02 3.02 0 00.5 6.19C0 8.05 0 12 0 12s0 3.95.5 5.81a3.02 3.02 0 002.12 2.14C4.46 20.4 12 20.4 12 20.4s7.54 0 9.38-.45a3.02 3.02 0 002.12-2.14C24 15.95 24 12 24 12s0-3.95-.5-5.81zM9.6 15.6V8.4l6.28 3.6-6.28 3.6z"/>
+          </svg>
+        </div>
+        <span class="link-label">YouTube</span>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <!-- Instagram -->
+      <a href="https://www.instagram.com/itspetpulp/" target="_blank" class="link-btn">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+          </svg>
+        </div>
+        <span class="link-label">Instagram</span>
+        <span class="link-arrow">→</span>
+      </a>
+
+      <!-- Facebook -->
+      <a href="https://www.facebook.com/petpulp/" target="_blank" class="link-btn">
+        <div class="link-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        </div>
+        <span class="link-label">Facebook</span>
+        <span class="link-arrow">→</span>
+      </a>
+
+    </div>
+
+    <div class="footer">
+      <div class="paws">🐾🐾🐾</div>
+      <p>© 2026 PetPulp · All rights reserved</p>
+    </div>
+
+  </div>
+</body>
+</html>
